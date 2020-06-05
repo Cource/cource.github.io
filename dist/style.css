@@ -1,0 +1,56 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: product sans;
+  font-weight: bold;
+}
+
+#hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#tri {
+  position: absolute;
+  top: 10vh;
+  right: 5vw;
+  width: 25vh;
+  height: 25vh;
+  z-index: -1;
+}
+
+#line {
+  position: absolute;
+  bottom: -10vh;
+  left: -5vw;
+  width: 30vh;
+  height: 30vh;
+  z-index: -1;
+}
+
+#contact {
+  top: 2rem;
+  left: 2rem;
+  font-size: 1.5rem;
+  color: #575757;
+  position: absolute;
+}
+
+#name {
+  direction: rtl;
+  font-size: 2rem;
+  color: #ACACAC;
+}
+
+#title {
+  font-size: 5rem;
+  color: #575757;
+}
+
+#currProject > p {
+  transform: rotate(90deg);
+  color: #575757;
+  font-size: 2rem;
+}
