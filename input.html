@@ -1,0 +1,68 @@
+
+<link rel="stylesheet" href="input.css"/>
+<script src="res/jquery.js"></script>
+<script src="res/vue.js"></script>
+<script src="/eel.js"></script>
+<body>
+  <div id="input">
+    <div id="top">
+      <p id="saleNo" @click="boom"># {{ saleId }}</p>
+      <div id="notInput">
+        <div id="history"></div>
+        <div id="sum">{{ sum }}</div>
+      </div>
+      <form @submit="pushToQueue()" onsubmit="return false">
+        <input type="text" v-model="input"/>
+      </form>
+    </div>
+    <div id="bottom">
+      <div id="left">
+        <button @click="insert(&quot;7&quot;)">7</button>
+        <button @click="insert(&quot;8&quot;)">8</button>
+        <button @click="insert(&quot;9&quot;)">9</button>
+        <button @click="insert(&quot;4&quot;)">4</button>
+        <button @click="insert(&quot;5&quot;)">5</button>
+        <button @click="insert(&quot;6&quot;)">6</button>
+        <button @click="insert(&quot;1&quot;)">1</button>
+        <button @click="insert(&quot;2&quot;)">2</button>
+        <button @click="insert(&quot;3&quot;)">3</button>
+        <button @click="insert(&quot;0&quot;)">0</button>
+        <button @click="insert(&quot;.&quot;)">.</button>
+      </div>
+      <div id="right">
+        <button @click="rmnum()" style="grid-area:&quot;back&quot;"><-</button>
+        <div class="a">
+          <button style="grid-area:&quot;/&quot;" @click="insert(&quot;/&quot;)">/</button>
+          <button style="grid-area:&quot;-&quot;" @click="insert(&quot;-&quot;)">-</button>
+        </div>
+        <div class="a">
+          <button style="grid-area:&quot;x&quot;" @click="insert(&quot;*&quot;)">x</button>
+          <button style="grid-area:&quot;+&quot;" @click="pushToQueue()">+</button>
+        </div>
+      </div>
+      <div id="enter">
+        <div id="purchase">
+          <div class="imag"></div>
+        </div>
+        <div id="sell" @click="sell">
+          <div class="imag"></div>
+        </div>
+      </div>
+    </div>
+    <div id="distributor">
+      <div id="head">
+        <div id="add" @click="showTxt"><img src="res/add.svg"/>
+          <div class="a">Add a new distributor</div>
+        </div>
+        <form id="txt" @submit="addDist" onsubmit="return false">
+          <input type="text" v-model="distName" placeholder="Type the name of the distributor"/>
+        </form>
+        <div id="close"><img src="res/down.svg"/></div>
+      </div>
+      <ul id="list">
+        <li @click="purchase(distributor)" v-for="distributor in distributors">{{ distributor }} </li>
+      </ul>
+    </div>
+  </div>
+</body>
+<script src="input.js"></script>

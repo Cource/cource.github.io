@@ -1,1 +1,30 @@
-<link rel="stylesheet" href="style.css"/><script src="jquery.js"></script><body><div id="hero"><div id="contact"><div id="cont">Contact me</div><div id="insta"></div><div id="twitter"></div><div id="email"></div></div><div id="name"><p id="title">Jeff Jacob Joy</p><p>Frontend programmer</p><p>UI/UX designer</p></div><div id="currProject"><img src="" alt=""/><p>Current Project</p></div><img id="tri" src="res/tri-grad.svg"/><img id="line" src="res/line-grad.svg"/></div></body>
+
+<link rel="stylesheet" href="style.css"/>
+<script src="res/jquery.js"></script>
+<script src="res/jquery-ui.js"></script>
+<script src="res/vue.js"></script>
+<body>
+  <div id="app">
+    <div id="nav">
+      <div class="top">
+        <button id="sale" @click="changeScreen(&quot;sale&quot;)">
+          <div class="imag"></div>
+        </button>
+        <button id="close" @click="changeScreen(&quot;close&quot;)">
+          <div class="imag"></div>
+        </button>
+        <button id="debt" @click="changeScreen(&quot;debt&quot;)">
+          <div class="imag"></div>
+        </button>
+      </div>
+      <div class="bottom">
+        <div id="account"></div>
+      </div>
+    </div>
+    <div id="graph"></div>
+    <div id="right">
+      <iframe src="input.html" frameborder="0" id="rightWindow"></iframe>
+    </div>
+  </div>
+</body>
+<script src="main.js"></script>

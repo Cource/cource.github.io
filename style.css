@@ -1,2 +1,98 @@
-*{padding:0;margin:0;font-family:product sans;font-weight:bold}#hero{height:100vh;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}#tri{position:absolute;top:10vh;right:5vw;width:25vh;height:25vh;z-index:-1}#line{position:absolute;bottom:-10vh;left:-5vw;width:30vh;height:30vh;z-index:-1}#contact{top:2rem;left:2rem;font-size:1.5rem;color:#575757;position:absolute}#name{direction:rtl;font-size:2rem;color:#ACACAC}#title{font-size:5rem;color:#575757}#currProject>p{-webkit-transform:rotate(90deg);transform:rotate(90deg);color:#575757;font-size:2rem}
-/*# sourceMappingURL=style.css.map */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  display: flex;
+  height: 100vh;
+}
+
+button {
+  background: none;
+  border: none;
+}
+
+#nav, .top, #nav > .top > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#nav {
+  width: 10%;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+  border-radius: 0 0.8rem 0.8rem 0;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.top {
+  flex-direction: column;
+}
+
+#nav > .top > * {
+  padding: 0.5rem;
+  margin: 1rem 0.5rem;
+  border-radius: 1rem;
+}
+
+.imag {
+  width: 2rem;
+  height: 2.2rem;
+}
+
+#nav > .top > #sale > .imag {
+  background: url("res/sale.svg");
+  margin-right: 0.2rem;
+}
+
+#nav > .top > #close > .imag {
+  background: url("res/close.svg");
+}
+
+#nav > .top > #debt > .imag {
+  background: url("res/debt.svg");
+}
+
+#account {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #eeeeee;
+  margin: 1rem;
+}
+
+#graph {
+  width: 100%;
+}
+
+#right {
+  width: 80%;
+  height: 100vh;
+  background: #EEF6F6;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+#rightWindow {
+  height: 100%;
+  width: 100%;
+}
+
+@media screen and (max-width: 65rem) {
+  #graph {
+    display: none;
+  }
+  #app {
+    flex-direction: column;
+  }
+  #nav, #right {
+    width: 100%;
+    flex-direction: row;
+  }
+  #nav > .top > * {
+    margin: 0.5rem 0.5rem;
+  }
+  .top {
+    flex-direction: row;
+  }
+}
