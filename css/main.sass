@@ -1,8 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap')
+
 *
   margin: 0
   padding: 0
 
+body, div, a
+  display: flex
+  flex-direction: column
 
+/* colors
 $Teal10: #0B2422
 $Teal20: #114642
 $Teal40: #1E5954
@@ -11,24 +18,87 @@ $Teal60: #51A59D
 $Teal70: #A3D1CE
 $Teal90: #E9FFFA
 
+.row
+  flex-direction: row
+
 
 body
   background: $Teal10
+  font-family: 'Atkinson Hyperlegible'
+  color: $Teal70
+  font-size: 1.3rem
+  overflow-x: hidden
 
 .home
-  margin-left: 10vw
+  margin-left: 20vw
   
 .hero
-  display: flex
-  width: 100vw
-  height: 100vh
-  color: $Teal70
+  flex-direction: row
+  width: 80vw
+  height: 95vh
   
 .center-text
   align-self: center
+  font-size: 3rem
+
+.title
+  color: $Teal90
+  font-size: 4rem
+  font-weight: bold
+
+.details
+  margin-top: 1rem
+  font-family: 'Fira Code'
   
+.designer
+  font-weight: bold
+  font-family: 'Atkinson Hyperlegible'
+  margin-left: 2rem
+
+
+
+.projects
+  background: $Teal40
+  padding: 4rem 0
+  margin-left: -4rem
+  border-radius: 6rem 0 0 6rem
+  overflow: hidden
+  & .title, .description
+    margin-left: 4rem
+
+.project-list
+  margin-top: 3rem
+  padding-left: 4rem
+  flex-direction: row
+  overflow-x: scroll
+  
+.project-card
+  background: $Teal20
+  color: $Teal90
+  border-radius: 2rem
+  text-decoration: none
+  flex-direction: row
+  overflow: hidden
+  width: 35rem
+  margin-right: 2rem
+  flex-shrink: 0
+
+.project-details
+  margin: 2rem 0 2rem 2rem
+  justify-content: space-between
+
+.techs
+  flex-direction: row
+  > img
+    height: 2rem
+    margin-right: 1rem
 
 .name
-  color: $Teal90
-  
+  font-size: 2rem
+  font-weight: bold
 
+.project-bg
+  height: 15rem
+  width: 20rem
+  background-size: cover !important
+  opacity: 0.6
