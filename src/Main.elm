@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, a, div, img, text)
+import Html exposing (Html, a, div, h1, img, text)
 import Html.Attributes exposing (alt, class, href, src, style)
 
 
@@ -38,10 +38,18 @@ testProjects =
 
 
 main =
-    div [ class "home" ]
-        [ hero
-        , portfolio testProjects
+    div [ class "app" ]
+        [ logo
+        , div [ class "home" ]
+            [ hero
+            , portfolio testProjects
+            ]
+        , footer
         ]
+
+
+logo =
+    div [ class "logo" ] [ img [ src "assets/svgs/J.svg", alt "logo" ] [] ]
 
 
 hero =
@@ -64,7 +72,7 @@ hero =
 portfolio : List Project -> Html msg
 portfolio projects =
     div [ class "projects" ]
-        [ div [ class "title" ] [ text "Projects" ]
+        [ h1 [] [ text "Projects" ]
         , div [ class "description" ] [ text "Some stuff that I made" ]
         , div [ class "project-list" ] (List.map projectCard projects)
         ]
@@ -91,4 +99,32 @@ projectCard project =
             , style "background" ("linear-gradient(90deg, #114642, transparent), url(" ++ project.image.path ++ ")")
             ]
             []
+        ]
+
+
+footer =
+    div [ class "footer" ]
+        [ div [ class "nopyright" ]
+            [ div [ class "name" ] [ text "ジエフ" ]
+            , div [] [ text "The source of this website is open." ]
+            , text "You can find it on: github.com/cource/cource.github.io"
+            ]
+        , div [ class "socials" ]
+            (List.map
+                (\social ->
+                    a [ class "social", href social.link ]
+                        [ img [ src social.image ] []
+                        , text social.name
+                        ]
+                )
+                [ { link = "https://github.com/cource"
+                  , image = "assets/svgs/github.svg"
+                  , name = "Github"
+                  }
+                , { link = "https://instagram.com/jeffjacobjoy"
+                  , image = "assets/svgs/instagram.svg"
+                  , name = "Instagram"
+                  }
+                ]
+            )
         ]

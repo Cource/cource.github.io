@@ -21,6 +21,9 @@ $Teal90: #E9FFFA
 .row
   flex-direction: row
 
+h1
+  color: $Teal90
+  font-size: 3rem
 
 body
   background: $Teal10
@@ -31,6 +34,15 @@ body
 
 .home
   margin-left: 20vw
+
+.logo
+  background: $Teal60
+  border-radius: 0 0 2.5rem 0
+  padding: 2rem 2.5rem
+  position: fixed
+  top: 0
+  & > img
+    height: 4rem
   
 .hero
   flex-direction: row
@@ -39,7 +51,7 @@ body
   
 .center-text
   align-self: center
-  font-size: 3rem
+  font-size: 2.5rem
 
 .title
   color: $Teal90
@@ -47,13 +59,13 @@ body
   font-weight: bold
 
 .details
-  margin-top: 1rem
+  margin-top: 2rem
   font-family: 'Fira Code'
   
 .designer
   font-weight: bold
   font-family: 'Atkinson Hyperlegible'
-  margin-left: 2rem
+  margin-left: 1.6rem
 
 
 
@@ -63,7 +75,7 @@ body
   margin-left: -4rem
   border-radius: 6rem 0 0 6rem
   overflow: hidden
-  & .title, .description
+  & h1, .description
     margin-left: 4rem
 
 .project-list
@@ -102,3 +114,42 @@ body
   width: 20rem
   background-size: cover !important
   opacity: 0.6
+
+
+.footer
+  background: $Teal40
+  width: 86vw
+  margin-top: 20rem
+  padding: 5rem 8vw
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  & .name
+    font-weight: bold
+    color: $Teal90
+    margin-bottom: 1rem
+
+.socials
+  gap: 1rem
+    
+.social
+  flex-direction: row
+  text-decoration: none
+  color: $Teal70
+  align-items: center
+  gap: 1rem
+  & > img
+    height: 2rem
+
+@media screen and (max-width: 700px)
+  .home
+    margin-left: 10vw
+  .center-text .title
+    max-width: 3rem
+  .projects
+    border-radius: 0
+  .footer
+    flex-direction: column
+    align-items: flex-start
+    gap: 3rem
+
