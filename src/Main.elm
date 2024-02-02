@@ -179,16 +179,16 @@ techImages =
 
 projectInfos : List ProjectInfo
 projectInfos =
-    [ { name = "Shopfront"
-      , description = "A simplified shop management system for supermarkets"
-      , image = { path = "/assets/images/shopfront.png", alt = "shopfront" }
-      , techs = [ techImages.figma, techImages.reactjs ]
-      , link = "#"
-      }
-    , { name = "VoteCamp"
+    [ { name = "VoteCamp"
       , description = "Political data collection utility for election campaigning."
-      , image = { path = "/assets/images/voteCamp.png", alt = "votecamp" }
+      , image = { path = "/assets/images/voteCamp.png", alt = "screenshot of an applicatoin's dashboard screen with headings like 'Personal Performance'" }
       , techs = [ techImages.figma, techImages.reactjs, techImages.typescript ]
+      , link = "https://github.com/Cource/vote-camp-frontend"
+      }
+    , { name = "Shopfront"
+      , description = "A simplified shop management system for supermarkets"
+      , image = { path = "/assets/images/shopfront.png", alt = "screenshot of an application with a big sell button and a list of items to sell" }
+      , techs = [ techImages.figma ]
       , link = "#"
       }
     ]
@@ -228,9 +228,15 @@ blogInfos : List BlogInfo
 blogInfos =
     [ { name = "Exploring Emacs"
       , datePublished = "2/2/2024"
-      , tags = ["emacs", "name"]
+      , tags = ["emacs", "test"]
       , description = "Emacs is a text editor that is a part of the GNU/Linux system, why should you use it?..."
       , id = "test"
+      }
+    , { name = "Function pointers in C"
+      , datePublished = "16/12/2023"
+      , tags = ["c", "fp"]
+      , description = "You can actually pass around functions to other functions in c. This article could give you some valuable insight into how you can use it."
+      , id = "fpinc"
       }
     ]
 

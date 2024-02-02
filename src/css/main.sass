@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap')
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap')
 
+html
+  --project-padding: 4rem
+
 *
   margin: 0
   padding: 0
@@ -17,6 +20,7 @@ $Teal50: #2A6F69
 $Teal60: #51A59D
 $Teal70: #A3D1CE
 $Teal90: #E9FFFA
+
 
 .row
   flex-direction: row
@@ -80,15 +84,15 @@ body
 .projects
   background: $Teal40
   padding: 4rem 0
-  margin-left: calc(20vw - 4rem)
+  margin-left: calc(20vw - var(--project-padding))
   border-radius: 6rem 0 0 6rem
   overflow: hidden
   & h1, .description
-    margin-left: 4rem
+    margin-left: var(--project-padding)
 
 .project-list
   margin-top: 3rem
-  padding-left: 4rem
+  padding-left: var(--project-padding)
   flex-direction: row
   overflow-x: scroll
   
@@ -125,8 +129,8 @@ body
 
 
 .blog-list
-  margin-top: 4rem
-  margin-bottom: 10rem
+  margin-block: 10rem
+  margin-right: 10vw
   gap: 3rem
   a
     color: $Teal70
@@ -143,7 +147,8 @@ body
   
 .footer
   background: $Teal40
-  width: 86vw
+  width: 100vw
+  box-sizing: border-box
   padding: 5rem 8vw
   flex-direction: row
   justify-content: space-between
@@ -167,6 +172,7 @@ body
 
 .blog-content
   margin-block: 8rem
+  margin-right: 10vw
   max-width: 60rem
   line-height: 1.4
   h1, h2, h3, h4, h5, h6
@@ -175,21 +181,41 @@ body
   ul
     margin-left: 1.2rem
   pre
-    background: black
+    background: #041a18
     padding: 1rem
     border-radius: 1rem
     margin: 1rem 0
-    color: white
+    color: $Teal90
     font-size: 1rem
+    overflow: scroll
+  blockquote
+    padding: 1rem
+    border-left: 0.3rem solid $Teal50
+  strong
+    color: $Teal90
+  hr
+    color: $Teal60
+    margin-block: 1rem
     
 @media screen and (max-width: 700px)
   .content > *
     margin-left: 10vw
+  body
+    font-size: 1.1rem
+  .logo
+    padding: 1.4rem 2rem
+    height: 3rem
+    width: 2rem
   .center-text .title
     max-width: 3rem
   .projects
     margin-left: 0
     border-radius: 0
+    --project-padding: 10vw
+  .project-list
+    flex-direction: column
+    gap: 2rem
+    overflow: clip
   .footer
     flex-direction: column
     align-items: flex-start
