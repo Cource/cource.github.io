@@ -12,8 +12,10 @@ body, div, a {
 .row {
   flex-direction: row; }
 
+h1, h2, h3, h4 {
+  color: #E9FFFA; }
+
 h1 {
-  color: #E9FFFA;
   font-size: 3rem; }
 
 body {
@@ -21,9 +23,14 @@ body {
   font-family: "Atkinson Hyperlegible";
   color: #A3D1CE;
   font-size: 1.3rem;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  min-height: 100vh;
+  justify-content: space-between; }
 
-.home {
+.content {
+  flex: 1; }
+
+.content > * {
   margin-left: 20vw; }
 
 .logo {
@@ -35,13 +42,15 @@ body {
   .logo > img {
     height: 4rem; }
 
+.page-not-found {
+  margin: auto !important;
+  align-items: center; }
+
 .hero {
-  flex-direction: row;
-  width: 80vw;
+  justify-content: space-around;
   height: 95vh; }
 
 .center-text {
-  align-self: center;
   font-size: 2.5rem; }
 
 .title {
@@ -61,7 +70,7 @@ body {
 .projects {
   background: #1E5954;
   padding: 4rem 0;
-  margin-left: -4rem;
+  margin-left: calc(20vw - 4rem);
   border-radius: 6rem 0 0 6rem;
   overflow: hidden; }
   .projects h1, .projects .description {
@@ -104,10 +113,26 @@ body {
   background-size: cover !important;
   opacity: 0.6; }
 
+.blog-list {
+  margin-top: 4rem;
+  margin-bottom: 10rem;
+  gap: 3rem; }
+  .blog-list a {
+    color: #A3D1CE;
+    text-decoration: none; }
+
+.blog-date {
+  color: #2A6F69; }
+
+.blog-tags {
+  flex-direction: row;
+  gap: 1rem; }
+  .blog-tags .tag {
+    color: #2A6F69; }
+
 .footer {
   background: #1E5954;
   width: 86vw;
-  margin-top: 20rem;
   padding: 5rem 8vw;
   flex-direction: row;
   justify-content: space-between;
@@ -129,14 +154,32 @@ body {
   .social > img {
     height: 2rem; }
 
+.blog-content {
+  margin-block: 8rem;
+  max-width: 60rem;
+  line-height: 1.4; }
+  .blog-content h1, .blog-content h2, .blog-content h3, .blog-content h4, .blog-content h5, .blog-content h6 {
+    margin-top: 2rem;
+    margin-bottom: 0.6rem; }
+  .blog-content ul {
+    margin-left: 1.2rem; }
+  .blog-content pre {
+    background: black;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 1rem 0;
+    color: white;
+    font-size: 1rem; }
+
 @media screen and (max-width: 700px) {
-  .home {
+  .content > * {
     margin-left: 10vw; }
 
   .center-text .title {
     max-width: 3rem; }
 
   .projects {
+    margin-left: 0;
     border-radius: 0; }
 
   .footer {
@@ -144,4 +187,4 @@ body {
     align-items: flex-start;
     gap: 3rem; } }
 
-/*# sourceMappingURL=sytle.css.map */
+/*# sourceMappingURL=style.css.map */

@@ -6694,7 +6694,7 @@ var $author$project$Main$blogTags = function (tags) {
 			]),
 		A2($elm$core$List$map, $author$project$Main$blogTag, tags));
 };
-var $elm$html$Html$h3 = _VirtualDom_node('h3');
+var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$Attributes$href = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
@@ -6713,7 +6713,7 @@ var $author$project$Main$blogEntry = function (blog) {
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$h3,
+				$elm$html$Html$h2,
 				_List_Nil,
 				_List_fromArray(
 					[
@@ -6754,11 +6754,24 @@ var $author$project$Main$blogList = function (blogs) {
 			_List_fromArray(
 				[
 					A2(
-					$elm$html$Html$h1,
+					$elm$html$Html$div,
 					_List_Nil,
 					_List_fromArray(
 						[
-							$elm$html$Html$text('Articles')
+							A2(
+							$elm$html$Html$h1,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Articles')
+								])),
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('A blog where I probably won\'t post much')
+								]))
 						]))
 				]),
 			A2($elm$core$List$map, $author$project$Main$blogEntry, blogs)));
@@ -6847,6 +6860,7 @@ var $author$project$Main$hero = A2(
 		]),
 	_List_fromArray(
 		[
+			A2($elm$html$Html$div, _List_Nil, _List_Nil),
 			A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -6899,11 +6913,11 @@ var $author$project$Main$hero = A2(
 				])),
 			A2(
 			$elm$html$Html$div,
+			_List_Nil,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('buttons')
-				]),
-			_List_Nil)
+					$elm$html$Html$text('🡳  Scroll down for more')
+				]))
 		]));
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $author$project$Main$logo = A2(
@@ -6928,7 +6942,7 @@ var $author$project$Main$page404 = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('404')
+			$elm$html$Html$Attributes$class('page-not-found')
 		]),
 	_List_fromArray(
 		[
@@ -7106,39 +7120,34 @@ var $author$project$Main$view = function (model) {
 	return {
 		body: _List_fromArray(
 			[
+				$author$project$Main$logo,
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('app')
+						$elm$html$Html$Attributes$class('content')
 					]),
-				_List_fromArray(
-					[
-						$author$project$Main$logo,
-						function () {
-						var _v0 = model.page;
-						switch (_v0.$) {
-							case 'Home':
-								return A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('home')
-										]),
-									_List_fromArray(
-										[
-											$author$project$Main$hero,
-											$author$project$Main$portfolio($author$project$Main$projectInfos),
-											$author$project$Main$blogList($author$project$Main$blogInfos)
-										]));
-							case 'Blog':
-								return $author$project$Main$viewBlog(model.blogContent);
-							default:
-								return $author$project$Main$page404;
-						}
-					}(),
-						$author$project$Main$footer
-					]))
+				function () {
+					var _v0 = model.page;
+					switch (_v0.$) {
+						case 'Home':
+							return _List_fromArray(
+								[
+									$author$project$Main$hero,
+									$author$project$Main$portfolio($author$project$Main$projectInfos),
+									$author$project$Main$blogList($author$project$Main$blogInfos)
+								]);
+						case 'Blog':
+							return _List_fromArray(
+								[
+									$author$project$Main$viewBlog(model.blogContent)
+								]);
+						default:
+							return _List_fromArray(
+								[$author$project$Main$page404]);
+					}
+				}()),
+				$author$project$Main$footer
 			]),
 		title: 'Jeff\'s blog'
 	};
