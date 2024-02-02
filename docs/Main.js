@@ -6657,7 +6657,15 @@ var $author$project$Main$blogInfos = _List_fromArray(
 		id: 'test',
 		name: 'Exploring Emacs',
 		tags: _List_fromArray(
-			['emacs', 'name'])
+			['emacs', 'test'])
+	},
+		{
+		datePublished: '16/12/2023',
+		description: 'You can actually pass around functions to other functions in c. This article could give you some valuable insight into how you can use it.',
+		id: 'fpinc',
+		name: 'Function pointers in C',
+		tags: _List_fromArray(
+			['c', 'fp'])
 	}
 	]);
 var $elm$html$Html$a = _VirtualDom_node('a');
@@ -7074,20 +7082,20 @@ var $author$project$Main$techImages = {
 var $author$project$Main$projectInfos = _List_fromArray(
 	[
 		{
-		description: 'A simplified shop management system for supermarkets',
-		image: {alt: 'shopfront', path: '/assets/images/shopfront.png'},
-		link: '#',
-		name: 'Shopfront',
-		techs: _List_fromArray(
-			[$author$project$Main$techImages.figma, $author$project$Main$techImages.reactjs])
-	},
-		{
 		description: 'Political data collection utility for election campaigning.',
-		image: {alt: 'votecamp', path: '/assets/images/voteCamp.png'},
-		link: '#',
+		image: {alt: 'screenshot of an applicatoin\'s dashboard screen with headings like \'Personal Performance\'', path: '/assets/images/voteCamp.png'},
+		link: 'https://github.com/Cource/vote-camp-frontend',
 		name: 'VoteCamp',
 		techs: _List_fromArray(
 			[$author$project$Main$techImages.figma, $author$project$Main$techImages.reactjs, $author$project$Main$techImages.typescript])
+	},
+		{
+		description: 'A simplified shop management system for supermarkets',
+		image: {alt: 'screenshot of an application with a big sell button and a list of items to sell', path: '/assets/images/shopfront.png'},
+		link: '#',
+		name: 'Shopfront',
+		techs: _List_fromArray(
+			[$author$project$Main$techImages.figma])
 	}
 	]);
 var $elm_explorations$markdown$Markdown$defaultOptions = {
