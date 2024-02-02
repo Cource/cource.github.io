@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (Html, a, div, h1, img, text, p)
+import Html exposing (Html, a, div, h1, h3, img, text, p)
 import Html.Attributes exposing (alt, class, href, src, style)
 import Http
 import Markdown
@@ -63,7 +63,7 @@ update msg model =
         LinkClicked urlReq ->
             case urlReq of
                 Browser.Internal url ->
-n                    (model, Nav.pushUrl model.key (Url.toString url))
+                    (model, Nav.pushUrl model.key (Url.toString url))
                 Browser.External href ->
                     (model, Nav.load href)
         UrlChanged url ->
@@ -102,7 +102,8 @@ view model =
                   Home ->
                       div [ class "home" ]
                           [ hero
-                          , portfolio testProjects
+                          , portfolio projectInfos
+                          , blogList blogInfos
                           ]
                   Blog _ -> viewBlog model.blogContent
                   PageNotFound -> page404
@@ -175,8 +176,8 @@ techImages =
     , typescript = { path = "assets/svgs/typescript.svg", alt = "typescript" }
     }
 
-testProjects : List ProjectInfo
-testProjects =
+projectInfos : List ProjectInfo
+projectInfos =
     [ { name = "Shopfront"
       , description = "A simplified shop management system for supermarkets"
       , image = { path = "assets/images/shopfront.png", alt = "shopfront" }
@@ -213,6 +214,47 @@ projectCard project =
             ]
             []
         ]
+
+type alias BlogInfo =
+    { name : String
+    , datePublished : String
+    , tags : List String
+    , description : String
+    , id : String
+    }
+
+blogInfos : List BlogInfo
+blogInfos =
+    [ { name = "Exploring Emacs"
+      , datePublished = "2/2/2024"
+      , tags = ["emacs", "name"]
+      , description = "Emacs is a text editor that is a part of the GNU/Linux system, why should you use it?..."
+      , id = "test"
+      }
+    ]
+
+blogList : List BlogInfo -> Html Msg
+blogList blogs =
+    div [class "blog-list"]
+        ([ h1 [] [text "Articles"] ] ++ List.map blogEntry blogs)
+
+blogEntry : BlogInfo -> Html Msg
+blogEntry blog =
+    a [ class "blog-entry"
+      , href ("/blog/" ++ blog.id)
+      ]
+      [ h3 [] [text blog.name]
+      , p [class "blog-date"] [text blog.datePublished]
+      , blogTags blog.tags
+      , p [class "blog-desc"] [text blog.description]
+      ]
+
+blogTags : List String -> Html msg
+blogTags tags =
+    div [class "blog-tags"] (List.map blogTag tags)
+
+blogTag : String -> Html msg
+blogTag tag = div [class "tag"] [text ("#" ++ tag)]
 
 footer : Html msg
 footer =

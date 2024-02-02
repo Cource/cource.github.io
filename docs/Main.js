@@ -6247,7 +6247,7 @@ var $author$project$Main$getBlog = function (blogId) {
 	return $elm$http$Http$get(
 		{
 			expect: $elm$http$Http$expectString($author$project$Main$GotBlogContent),
-			url: '/blogs/' + (blogId + '.md')
+			url: '/assets/blogs/' + (blogId + '.md')
 		});
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
@@ -6649,6 +6649,18 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$none);
 		}
 	});
+var $author$project$Main$blogInfos = _List_fromArray(
+	[
+		{
+		datePublished: '2/2/2024',
+		description: 'Emacs is a text editor that is a part of the GNU/Linux system, why should you use it?...',
+		id: 'test',
+		name: 'Exploring Emacs',
+		tags: _List_fromArray(
+			['emacs', 'name'])
+	}
+	]);
+var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -6659,12 +6671,97 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$a = _VirtualDom_node('a');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$blogTag = function (tag) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('tag')
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text('#' + tag)
+			]));
+};
+var $author$project$Main$blogTags = function (tags) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('blog-tags')
+			]),
+		A2($elm$core$List$map, $author$project$Main$blogTag, tags));
+};
+var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$Attributes$href = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
 		'href',
 		_VirtualDom_noJavaScriptUri(url));
+};
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$Main$blogEntry = function (blog) {
+	return A2(
+		$elm$html$Html$a,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('blog-entry'),
+				$elm$html$Html$Attributes$href('/blog/' + blog.id)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$h3,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(blog.name)
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('blog-date')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(blog.datePublished)
+					])),
+				$author$project$Main$blogTags(blog.tags),
+				A2(
+				$elm$html$Html$p,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('blog-desc')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(blog.description)
+					]))
+			]));
+};
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $author$project$Main$blogList = function (blogs) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('blog-list')
+			]),
+		_Utils_ap(
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$h1,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Articles')
+						]))
+				]),
+			A2($elm$core$List$map, $author$project$Main$blogEntry, blogs)));
 };
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$Attributes$src = function (url) {
@@ -6673,8 +6770,6 @@ var $elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$footer = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -6828,8 +6923,6 @@ var $author$project$Main$logo = A2(
 				]),
 			_List_Nil)
 		]));
-var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Main$page404 = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -6963,7 +7056,7 @@ var $author$project$Main$techImages = {
 	reactjs: {alt: 'reactjs', path: 'assets/svgs/react.svg'},
 	typescript: {alt: 'typescript', path: 'assets/svgs/typescript.svg'}
 };
-var $author$project$Main$testProjects = _List_fromArray(
+var $author$project$Main$projectInfos = _List_fromArray(
 	[
 		{
 		description: 'A simplified shop management system for supermarkets',
@@ -7034,7 +7127,8 @@ var $author$project$Main$view = function (model) {
 									_List_fromArray(
 										[
 											$author$project$Main$hero,
-											$author$project$Main$portfolio($author$project$Main$testProjects)
+											$author$project$Main$portfolio($author$project$Main$projectInfos),
+											$author$project$Main$blogList($author$project$Main$blogInfos)
 										]));
 							case 'Blog':
 								return $author$project$Main$viewBlog(model.blogContent);
