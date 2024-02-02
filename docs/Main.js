@@ -6835,8 +6835,8 @@ var $author$project$Main$footer = A2(
 				},
 				_List_fromArray(
 					[
-						{image: 'assets/svgs/github.svg', link: 'https://github.com/cource', name: 'Github'},
-						{image: 'assets/svgs/instagram.svg', link: 'https://instagram.com/jeffjacobjoy', name: 'Instagram'}
+						{image: '/assets/svgs/github.svg', link: 'https://github.com/cource', name: 'Github'},
+						{image: '/assets/svgs/instagram.svg', link: 'https://instagram.com/jeffjacobjoy', name: 'Instagram'}
 					])))
 		]));
 var $author$project$Main$hero = A2(
@@ -6907,10 +6907,11 @@ var $author$project$Main$hero = A2(
 		]));
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $author$project$Main$logo = A2(
-	$elm$html$Html$div,
+	$elm$html$Html$a,
 	_List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('logo')
+			$elm$html$Html$Attributes$class('logo'),
+			$elm$html$Html$Attributes$href('/')
 		]),
 	_List_fromArray(
 		[
@@ -6918,7 +6919,7 @@ var $author$project$Main$logo = A2(
 			$elm$html$Html$img,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$src('assets/svgs/J.svg'),
+					$elm$html$Html$Attributes$src('/assets/svgs/J.svg'),
 					$elm$html$Html$Attributes$alt('logo')
 				]),
 			_List_Nil)
@@ -7052,15 +7053,15 @@ var $author$project$Main$portfolio = function (projects) {
 			]));
 };
 var $author$project$Main$techImages = {
-	figma: {alt: 'figma', path: 'assets/svgs/figma.svg'},
-	reactjs: {alt: 'reactjs', path: 'assets/svgs/react.svg'},
-	typescript: {alt: 'typescript', path: 'assets/svgs/typescript.svg'}
+	figma: {alt: 'figma', path: '/assets/svgs/figma.svg'},
+	reactjs: {alt: 'reactjs', path: '/assets/svgs/react.svg'},
+	typescript: {alt: 'typescript', path: '/assets/svgs/typescript.svg'}
 };
 var $author$project$Main$projectInfos = _List_fromArray(
 	[
 		{
 		description: 'A simplified shop management system for supermarkets',
-		image: {alt: 'shopfront', path: 'assets/images/shopfront.png'},
+		image: {alt: 'shopfront', path: '/assets/images/shopfront.png'},
 		link: '#',
 		name: 'Shopfront',
 		techs: _List_fromArray(
@@ -7068,7 +7069,7 @@ var $author$project$Main$projectInfos = _List_fromArray(
 	},
 		{
 		description: 'Political data collection utility for election campaigning.',
-		image: {alt: 'votecamp', path: 'assets/images/voteCamp.png'},
+		image: {alt: 'votecamp', path: '/assets/images/voteCamp.png'},
 		link: '#',
 		name: 'VoteCamp',
 		techs: _List_fromArray(
