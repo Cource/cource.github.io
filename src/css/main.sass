@@ -21,8 +21,9 @@ $Teal90: #E9FFFA
 .row
   flex-direction: row
 
-h1
+h1, h2, h3, h4
   color: $Teal90
+h1
   font-size: 3rem
 
 body
@@ -31,8 +32,13 @@ body
   color: $Teal70
   font-size: 1.3rem
   overflow-x: hidden
+  min-height: 100vh
+  justify-content: space-between
 
-.home
+.content
+  flex: 1
+  
+.content > *
   margin-left: 20vw
 
 .logo
@@ -43,14 +49,16 @@ body
   top: 0
   & > img
     height: 4rem
-  
+
+.page-not-found
+  margin: auto !important
+  align-items: center
+    
 .hero
-  flex-direction: row
-  width: 80vw
+  justify-content: space-around
   height: 95vh
   
 .center-text
-  align-self: center
   font-size: 2.5rem
 
 .title
@@ -72,7 +80,7 @@ body
 .projects
   background: $Teal40
   padding: 4rem 0
-  margin-left: -4rem
+  margin-left: calc(20vw - 4rem)
   border-radius: 6rem 0 0 6rem
   overflow: hidden
   & h1, .description
@@ -116,10 +124,26 @@ body
   opacity: 0.6
 
 
+.blog-list
+  margin-top: 4rem
+  margin-bottom: 10rem
+  gap: 3rem
+  a
+    color: $Teal70
+    text-decoration: none
+
+.blog-date
+  color: $Teal50
+.blog-tags
+  flex-direction: row
+  gap: 1rem
+  .tag
+    color: $Teal50
+
+  
 .footer
   background: $Teal40
   width: 86vw
-  margin-top: 20rem
   padding: 5rem 8vw
   flex-direction: row
   justify-content: space-between
@@ -141,12 +165,30 @@ body
   & > img
     height: 2rem
 
+.blog-content
+  margin-block: 8rem
+  max-width: 60rem
+  line-height: 1.4
+  h1, h2, h3, h4, h5, h6
+    margin-top: 2rem
+    margin-bottom: 0.6rem
+  ul
+    margin-left: 1.2rem
+  pre
+    background: black
+    padding: 1rem
+    border-radius: 1rem
+    margin: 1rem 0
+    color: white
+    font-size: 1rem
+    
 @media screen and (max-width: 700px)
-  .home
+  .content > *
     margin-left: 10vw
   .center-text .title
     max-width: 3rem
   .projects
+    margin-left: 0
     border-radius: 0
   .footer
     flex-direction: column

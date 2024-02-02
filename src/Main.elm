@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (Html, a, div, h1, h3, img, text, p)
+import Html exposing (Html, a, div, h1, h2, img, text, p)
 import Html.Attributes exposing (alt, class, href, src, style)
 import Http
 import Markdown
@@ -96,24 +96,23 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "Jeff's blog"
     , body =
-        [ div [ class "app" ]
-              [ logo
-              , case model.page of
-                  Home ->
-                      div [ class "home" ]
-                          [ hero
-                          , portfolio projectInfos
-                          , blogList blogInfos
-                          ]
-                  Blog _ -> viewBlog model.blogContent
-                  PageNotFound -> page404
-              , footer
-              ]
+        [ logo
+        , div [ class "content" ]
+            (case model.page of
+                 Home ->
+                     [ hero
+                     , portfolio projectInfos
+                     , blogList blogInfos
+                     ]
+                 Blog _ -> [viewBlog model.blogContent]
+                 PageNotFound -> [page404]
+            )
+        , footer
         ]
     }
 
 page404 : Html msg
-page404 = div [ class "404" ]
+page404 = div [ class "page-not-found" ]
           [ h1 [] [text "404"]
           , p [] [text "Page Not Found"]
           ]
@@ -134,7 +133,8 @@ logo =
 hero : Html msg
 hero =
     div [ class "hero" ]
-        [ div [ class "center-text" ]
+        [ div [] []
+        , div [ class "center-text" ]
             [ text "Hi, I'm"
             , div [ class "title" ] [ text "Jeff Jacob Joy" ]
             , div [ class "details" ]
@@ -145,7 +145,7 @@ hero =
                 , text "| Programmer"
                 ]
             ]
-        , div [ class "buttons" ] []
+        , div [] [text "🡳  Scroll down for more"]
         ]
 
 
@@ -237,14 +237,18 @@ blogInfos =
 blogList : List BlogInfo -> Html Msg
 blogList blogs =
     div [class "blog-list"]
-        ([ h1 [] [text "Articles"] ] ++ List.map blogEntry blogs)
+        ([ div []
+               [h1 [] [text "Articles"]
+               , p [] [text "A blog where I probably won't post much"]
+               ]
+         ] ++ List.map blogEntry blogs)
 
 blogEntry : BlogInfo -> Html Msg
 blogEntry blog =
     a [ class "blog-entry"
       , href ("/blog/" ++ blog.id)
       ]
-      [ h3 [] [text blog.name]
+      [ h2 [] [text blog.name]
       , p [class "blog-date"] [text blog.datePublished]
       , blogTags blog.tags
       , p [class "blog-desc"] [text blog.description]
