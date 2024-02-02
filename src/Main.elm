@@ -128,7 +128,8 @@ viewBlog status =
 
 logo : Html msg
 logo =
-    div [ class "logo" ] [ img [ src "assets/svgs/J.svg", alt "logo" ] [] ]
+    a [ class "logo", href "/" ]
+        [ img [ src "/assets/svgs/J.svg", alt "logo" ] [] ]
 
 hero : Html msg
 hero =
@@ -171,22 +172,22 @@ type alias ProjectInfo =
     }
 
 techImages =
-    { figma = { path = "assets/svgs/figma.svg", alt = "figma" }
-    , reactjs = { path = "assets/svgs/react.svg", alt = "reactjs" }
-    , typescript = { path = "assets/svgs/typescript.svg", alt = "typescript" }
+    { figma = { path = "/assets/svgs/figma.svg", alt = "figma" }
+    , reactjs = { path = "/assets/svgs/react.svg", alt = "reactjs" }
+    , typescript = { path = "/assets/svgs/typescript.svg", alt = "typescript" }
     }
 
 projectInfos : List ProjectInfo
 projectInfos =
     [ { name = "Shopfront"
       , description = "A simplified shop management system for supermarkets"
-      , image = { path = "assets/images/shopfront.png", alt = "shopfront" }
+      , image = { path = "/assets/images/shopfront.png", alt = "shopfront" }
       , techs = [ techImages.figma, techImages.reactjs ]
       , link = "#"
       }
     , { name = "VoteCamp"
       , description = "Political data collection utility for election campaigning."
-      , image = { path = "assets/images/voteCamp.png", alt = "votecamp" }
+      , image = { path = "/assets/images/voteCamp.png", alt = "votecamp" }
       , techs = [ techImages.figma, techImages.reactjs, techImages.typescript ]
       , link = "#"
       }
@@ -273,11 +274,11 @@ footer =
                         ]
                 )
                 [ { link = "https://github.com/cource"
-                  , image = "assets/svgs/github.svg"
+                  , image = "/assets/svgs/github.svg"
                   , name = "Github"
                   }
                 , { link = "https://instagram.com/jeffjacobjoy"
-                  , image = "assets/svgs/instagram.svg"
+                  , image = "/assets/svgs/instagram.svg"
                   , name = "Instagram"
                   }
                 ]
