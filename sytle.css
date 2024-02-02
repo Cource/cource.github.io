@@ -1,0 +1,147 @@
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
+* {
+  margin: 0;
+  padding: 0; }
+
+body, div, a {
+  display: flex;
+  flex-direction: column; }
+
+/* colors */
+.row {
+  flex-direction: row; }
+
+h1 {
+  color: #E9FFFA;
+  font-size: 3rem; }
+
+body {
+  background: #0B2422;
+  font-family: "Atkinson Hyperlegible";
+  color: #A3D1CE;
+  font-size: 1.3rem;
+  overflow-x: hidden; }
+
+.home {
+  margin-left: 20vw; }
+
+.logo {
+  background: #51A59D;
+  border-radius: 0 0 2.5rem 0;
+  padding: 2rem 2.5rem;
+  position: fixed;
+  top: 0; }
+  .logo > img {
+    height: 4rem; }
+
+.hero {
+  flex-direction: row;
+  width: 80vw;
+  height: 95vh; }
+
+.center-text {
+  align-self: center;
+  font-size: 2.5rem; }
+
+.title {
+  color: #E9FFFA;
+  font-size: 4rem;
+  font-weight: bold; }
+
+.details {
+  margin-top: 2rem;
+  font-family: "Fira Code"; }
+
+.designer {
+  font-weight: bold;
+  font-family: "Atkinson Hyperlegible";
+  margin-left: 1.6rem; }
+
+.projects {
+  background: #1E5954;
+  padding: 4rem 0;
+  margin-left: -4rem;
+  border-radius: 6rem 0 0 6rem;
+  overflow: hidden; }
+  .projects h1, .projects .description {
+    margin-left: 4rem; }
+
+.project-list {
+  margin-top: 3rem;
+  padding-left: 4rem;
+  flex-direction: row;
+  overflow-x: scroll; }
+
+.project-card {
+  background: #114642;
+  color: #E9FFFA;
+  border-radius: 2rem;
+  text-decoration: none;
+  flex-direction: row;
+  overflow: hidden;
+  width: 35rem;
+  margin-right: 2rem;
+  flex-shrink: 0; }
+
+.project-details {
+  margin: 2rem 0 2rem 2rem;
+  justify-content: space-between; }
+
+.techs {
+  flex-direction: row; }
+  .techs > img {
+    height: 2rem;
+    margin-right: 1rem; }
+
+.name {
+  font-size: 2rem;
+  font-weight: bold; }
+
+.project-bg {
+  height: 15rem;
+  width: 20rem;
+  background-size: cover !important;
+  opacity: 0.6; }
+
+.footer {
+  background: #1E5954;
+  width: 86vw;
+  margin-top: 20rem;
+  padding: 5rem 8vw;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center; }
+  .footer .name {
+    font-weight: bold;
+    color: #E9FFFA;
+    margin-bottom: 1rem; }
+
+.socials {
+  gap: 1rem; }
+
+.social {
+  flex-direction: row;
+  text-decoration: none;
+  color: #A3D1CE;
+  align-items: center;
+  gap: 1rem; }
+  .social > img {
+    height: 2rem; }
+
+@media screen and (max-width: 700px) {
+  .home {
+    margin-left: 10vw; }
+
+  .center-text .title {
+    max-width: 3rem; }
+
+  .projects {
+    border-radius: 0; }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3rem; } }
+
+/*# sourceMappingURL=sytle.css.map */
