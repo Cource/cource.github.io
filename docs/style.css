@@ -40,10 +40,9 @@ body {
   background: #51A59D;
   border-radius: 0 0 2.5rem 0;
   padding: 2rem 2.5rem;
+  width: 2.5rem;
   position: fixed;
   top: 0; }
-  .logo > img {
-    height: 4rem; }
 
 .page-not-found {
   margin: auto !important;
@@ -193,12 +192,15 @@ body {
     font-size: 1.1rem; }
 
   .logo {
-    padding: 1.4rem 2rem;
-    height: 3rem;
-    width: 2rem; }
+    padding: 3vh 3.5vh;
+    width: 4vh; }
+
+  .center-text {
+    font-size: 4.5vh; }
 
   .center-text .title {
-    max-width: 3rem; }
+    word-spacing: 100vw;
+    font-size: 9vh; }
 
   .projects {
     margin-left: 0;
