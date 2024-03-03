@@ -4,7 +4,7 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (Html, a, div, h1, h2, img, text, p)
 import Html.Attributes exposing (alt, class, href, src, style, property)
-import Markdown
+import Markdown exposing (toHtmlWith, defaultOptions)
 import Json.Decode as JD exposing (Decoder, map5, field, string, list)
 import Http
 import Url
@@ -139,7 +139,7 @@ viewBlog status =
         Failure -> page404
         Loading -> text "Loading Content..."
         Success content ->
-            Markdown.toHtml [class "blog-content"] content
+            Markdown.toHtmlWith {defaultOptions|sanitize=False} [class "blog-content"] content
 
 logo : Html msg
 logo =

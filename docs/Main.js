@@ -7158,7 +7158,6 @@ var $elm_explorations$markdown$Markdown$defaultOptions = {
 	smartypants: false
 };
 var $elm_explorations$markdown$Markdown$toHtmlWith = _Markdown_toHtml;
-var $elm_explorations$markdown$Markdown$toHtml = $elm_explorations$markdown$Markdown$toHtmlWith($elm_explorations$markdown$Markdown$defaultOptions);
 var $author$project$Main$viewBlog = function (status) {
 	switch (status.$) {
 		case 'Failure':
@@ -7167,8 +7166,11 @@ var $author$project$Main$viewBlog = function (status) {
 			return $elm$html$Html$text('Loading Content...');
 		default:
 			var content = status.a;
-			return A2(
-				$elm_explorations$markdown$Markdown$toHtml,
+			return A3(
+				$elm_explorations$markdown$Markdown$toHtmlWith,
+				_Utils_update(
+					$elm_explorations$markdown$Markdown$defaultOptions,
+					{sanitize: false}),
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$class('blog-content')
