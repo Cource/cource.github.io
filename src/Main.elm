@@ -58,7 +58,7 @@ main = Browser.application
 init : () -> Url.Url -> Nav.Key -> (Model, Cmd Msg)
 init _ url key =
     let pa = pageFromUrl url
-    in (Model key pa Loading Loading, Cmd.batch [blogCmd pa, getBlogIndex pa])
+    in (Model key pa Loading Loading, Cmd.batch [blogCmd pa, getBlogIndex])
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -98,16 +98,13 @@ getBlog blogId =
         , expect  = Http.expectString GotBlogContent
         }
 
-getBlogIndex : Page -> Cmd Msg
-getBlogIndex page =
-    case page of
-        Home ->
-            Http.get
-                { url = "/assets/blogs/index.json"
-                , expect = Http.expectJson GotBlogIndex blogIndexDecoder
-                }
-        _ -> Cmd.none
-        
+getBlogIndex : Cmd Msg
+getBlogIndex =
+    Http.get
+        { url = "/assets/blogs/index.json"
+        , expect = Http.expectJson GotBlogIndex blogIndexDecoder
+        }
+             
 
 
 
@@ -236,7 +233,7 @@ projectCard project =
         ]
 
 type alias BlogInfo =
-    { name : String
+    { title : String
     , datePublished : String
     , tags : List String
     , description : String
@@ -249,7 +246,7 @@ blogIndexDecoder = list decodeBlogInfo
 decodeBlogInfo : Decoder BlogInfo
 decodeBlogInfo =
     map5 BlogInfo
-        (field "name" JD.string)
+        (field "title" JD.string)
         (field "datePublished" JD.string)
         (field "tags" (list JD.string))
         (field "description" JD.string)
@@ -259,7 +256,7 @@ decodeBlogInfo =
 blogList : FailableLoad (List BlogInfo) -> Html Msg
 blogList res =
     case res of
-        Failure -> page404
+        Failure -> text "Could not load Blog List"
         Loading -> text "Loading Content..."
         Success blogs ->
             div [class "blog-list"]
@@ -274,7 +271,7 @@ blogEntry blog =
     a [ class "blog-entry"
       , href ("/blog/" ++ blog.blogId)
       ]
-      [ h2 [] [text blog.name]
+      [ h2 [] [text blog.title]
       , p [class "blog-date"] [text blog.datePublished]
       , blogTags blog.tags
       , p [class "blog-desc"] [text blog.description]

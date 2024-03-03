@@ -6264,8 +6264,8 @@ var $author$project$Main$GotBlogIndex = function (a) {
 	return {$: 'GotBlogIndex', a: a};
 };
 var $author$project$Main$BlogInfo = F5(
-	function (name, datePublished, tags, description, blogId) {
-		return {blogId: blogId, datePublished: datePublished, description: description, name: name, tags: tags};
+	function (title, datePublished, tags, description, blogId) {
+		return {blogId: blogId, datePublished: datePublished, description: description, tags: tags, title: title};
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$list = _Json_decodeList;
@@ -6274,7 +6274,7 @@ var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Main$decodeBlogInfo = A6(
 	$elm$json$Json$Decode$map5,
 	$author$project$Main$BlogInfo,
-	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'title', $elm$json$Json$Decode$string),
 	A2($elm$json$Json$Decode$field, 'datePublished', $elm$json$Json$Decode$string),
 	A2(
 		$elm$json$Json$Decode$field,
@@ -6297,17 +6297,11 @@ var $elm$http$Http$expectJson = F2(
 						A2($elm$json$Json$Decode$decodeString, decoder, string));
 				}));
 	});
-var $author$project$Main$getBlogIndex = function (page) {
-	if (page.$ === 'Home') {
-		return $elm$http$Http$get(
-			{
-				expect: A2($elm$http$Http$expectJson, $author$project$Main$GotBlogIndex, $author$project$Main$blogIndexDecoder),
-				url: '/assets/blogs/index.json'
-			});
-	} else {
-		return $elm$core$Platform$Cmd$none;
-	}
-};
+var $author$project$Main$getBlogIndex = $elm$http$Http$get(
+	{
+		expect: A2($elm$http$Http$expectJson, $author$project$Main$GotBlogIndex, $author$project$Main$blogIndexDecoder),
+		url: '/assets/blogs/index.json'
+	});
 var $author$project$Main$PageNotFound = {$: 'PageNotFound'};
 var $author$project$Main$Blog = function (a) {
 	return {$: 'Blog', a: a};
@@ -6602,7 +6596,7 @@ var $author$project$Main$init = F3(
 				_List_fromArray(
 					[
 						$author$project$Main$blogCmd(pa),
-						$author$project$Main$getBlogIndex(pa)
+						$author$project$Main$getBlogIndex
 					])));
 	});
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -6775,7 +6769,7 @@ var $author$project$Main$blogEntry = function (blog) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(blog.name)
+						$elm$html$Html$text(blog.title)
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6801,33 +6795,10 @@ var $author$project$Main$blogEntry = function (blog) {
 			]));
 };
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $author$project$Main$page404 = A2(
-	$elm$html$Html$div,
-	_List_fromArray(
-		[
-			$elm$html$Html$Attributes$class('page-not-found')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$elm$html$Html$h1,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text('404')
-				])),
-			A2(
-			$elm$html$Html$p,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Page Not Found')
-				]))
-		]));
 var $author$project$Main$blogList = function (res) {
 	switch (res.$) {
 		case 'Failure':
-			return $author$project$Main$page404;
+			return $elm$html$Html$text('Could not load Blog List');
 		case 'Loading':
 			return $elm$html$Html$text('Loading Content...');
 		default:
@@ -7026,6 +6997,29 @@ var $author$project$Main$logo = A2(
 					$elm$html$Html$Attributes$alt('logo')
 				]),
 			_List_Nil)
+		]));
+var $author$project$Main$page404 = A2(
+	$elm$html$Html$div,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('page-not-found')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$elm$html$Html$h1,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text('404')
+				])),
+			A2(
+			$elm$html$Html$p,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Page Not Found')
+				]))
 		]));
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
