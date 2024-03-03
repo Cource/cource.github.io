@@ -4,7 +4,7 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (Html, a, div, h1, h2, img, text, p)
 import Html.Attributes exposing (alt, class, href, src, style, property)
-import Json.Encode as JE exposing (string)
+import Markdown
 import Json.Decode as JD exposing (Decoder, map5, field, string, list)
 import Http
 import Url
@@ -101,7 +101,8 @@ getBlog blogId =
 getBlogIndex : Page -> Cmd Msg
 getBlogIndex page =
     case page of
-        Home -> Http.get
+        Home ->
+            Http.get
                 { url = "/assets/blogs/index.json"
                 , expect = Http.expectJson GotBlogIndex blogIndexDecoder
                 }
@@ -141,7 +142,7 @@ viewBlog status =
         Failure -> page404
         Loading -> text "Loading Content..."
         Success content ->
-            div [class "blog-content", property  "innerHTML" <| JE.string content] []
+            Markdown.toHtml [class "blog-content"] content
 
 logo : Html msg
 logo =
