@@ -1,0 +1,221 @@
+<header><h1 class="title">How languages shape the code you write</h1><div class="date">2024-02-12 Mon</div><ul><li>name</li></ul></header>
+<p>Recently, I came across an interesting scheduling problem about
+finding the minimum number of platforms that a station must have given a
+list of arrival and departure times of N trains. So, I wrote a solution
+to it in python, and the solution itself is pretty simple.</p>
+<h1>Solution in Python</h1>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> minimum_platforms(arrival, departure):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  platforms <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  queue <span class="op">=</span> []</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arrival)<span class="op">-</span><span class="dv">1</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> dep <span class="kw">in</span> queue:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> dep <span class="op">&lt;</span> arrival[i<span class="op">+</span><span class="dv">1</span>]:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>              queue.pop()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> departure[i] <span class="op">&gt;=</span> arrival[i<span class="op">+</span><span class="dv">1</span>]:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>          queue.append(departure[i])</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      platforms <span class="op">=</span> <span class="bu">max</span>(platforms, <span class="bu">len</span>(queue)<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> platforms</span></code></pre></div>
+<p>This is a simple function that takes two lists (arrival and
+departure), assumes that it only requires 1 platform, then takes each
+train, checks if it temporally overlaps with the previous train. If so,
+the train is added to a queue. Then, every train in the queue is checked
+to see if its time for it to depart, if so, it is dequeued(the code for
+this in the example is wrong). This is repeated until no trains are
+left.</p>
+<p>The minimum platforms required is then the maximum size that the
+queue reached. I reached this solution by visualizing the trains in
+time. Here is the visualization i made as ASCII art:</p>
+<pre><code>train1: =     |
+train2:   ========
+train3:    ====
+train4:       ===
+train5:       |=
+train6:       |   ===
+time axis -----------------&gt;
+</code></pre>
+<p>In this visualization, the line passing through trains (drawn using
+'|') is the point in time where the maximum number of trains where at
+the station.</p>
+<h1>Solution in Rust</h1>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::convert::</span><span class="bu">TryInto</span><span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::iter::</span>zip<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Clone</span><span class="at">)]</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Train <span class="op">{</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    arrival<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    departure<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> trains_in_station_at(trains<span class="op">:</span> <span class="op">&amp;</span><span class="dt">Vec</span><span class="op">&lt;</span>Train<span class="op">&gt;,</span> time<span class="op">:</span> <span class="op">&amp;</span><span class="dt">i32</span>) <span class="op">-&gt;</span> <span class="dt">Vec</span><span class="op">&lt;</span>Train<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    trains<span class="op">.</span>iter()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>filter(<span class="op">|</span>train<span class="op">|</span> time <span class="op">&lt;=</span> <span class="op">&amp;</span>train<span class="op">.</span>departure)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>filter(<span class="op">|</span>train<span class="op">|</span> time <span class="op">&gt;=</span> <span class="op">&amp;</span>train<span class="op">.</span>arrival)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>cloned()</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>collect()</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> min_platforms(arrivals<span class="op">:</span> <span class="dt">Vec</span><span class="op">&lt;</span><span class="dt">i32</span><span class="op">&gt;,</span> departures<span class="op">:</span> <span class="dt">Vec</span><span class="op">&lt;</span><span class="dt">i32</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="dt">i32</span> <span class="op">{</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> trains <span class="op">=</span> zip(arrivals<span class="op">.</span>clone()<span class="op">,</span>departures)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>map(<span class="op">|</span>(arrival<span class="op">,</span> departure)<span class="op">|</span> Train <span class="op">{</span>arrival<span class="op">,</span> departure<span class="op">}</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>collect()<span class="op">;</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    arrivals<span class="op">.</span>iter()</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>map(<span class="op">|</span>time<span class="op">|</span> trains_in_station_at(<span class="op">&amp;</span>trains<span class="op">,</span> <span class="op">&amp;</span>time)<span class="op">.</span>len())</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>max()</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>unwrap()<span class="op">.</span>try_into()<span class="op">.</span>unwrap()</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> arrivals   <span class="op">=</span> <span class="pp">vec!</span>[<span class="dv">900</span><span class="op">,</span> <span class="dv">930</span><span class="op">,</span>  <span class="dv">940</span><span class="op">,</span>  <span class="dv">1000</span><span class="op">,</span> <span class="dv">1020</span><span class="op">,</span> <span class="dv">1220</span>]<span class="op">;</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> departures <span class="op">=</span> <span class="pp">vec!</span>[<span class="dv">910</span><span class="op">,</span> <span class="dv">1200</span><span class="op">,</span> <span class="dv">1000</span><span class="op">,</span> <span class="dv">1100</span><span class="op">,</span> <span class="dv">1040</span><span class="op">,</span> <span class="dv">1240</span>]<span class="op">;</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span><span class="op">,</span> min_platforms(arrivals<span class="op">,</span> departures))</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Rust lets you actually model your data structures, that way, you can
+pass around the stuff you want without much hassle. In this attempt, my
+goal was not to make the most optimized piece of code ever written, but
+to use sensible data structures and procedures to model this problem,
+which I could use to the solve it.</p>
+<p>Here, Rather than constructing a queue where i store every
+overlapping train, that part is abstracted into a function that returns
+the trains that were at the station at a given time. Which I use to find
+the number of trains at the station when each train arrives. Then I take
+the biggest number from that list, which is the minimum number of
+platforms required.</p>
+<p>This is a much more sensible implementation. But there was too much
+fighting with the compiler about getting the borrows and cloning right,
+than i would have liked.</p>
+<h1>Solution in Haskell</h1>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#!/usr/bin/env nix-shell</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#!nix-shell --pure -i runghc -p &quot;haskellPackages.ghcWithPackages (pkgs: [ pkgs.maximal-cliques pkgs.Unique ])&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.List</span> (subsequences)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.List.Unique</span> (sortUniq)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.Algorithm.MaximalCliques</span> (getMaximalCliques)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> <span class="dt">Time</span> <span class="ot">=</span> <span class="dt">Int</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> <span class="dt">Graph</span> a <span class="ot">=</span> [<span class="dt">Edge</span> a]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> <span class="dt">Edge</span> a <span class="ot">=</span> (a, a)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">Train</span> <span class="ot">=</span> <span class="dt">Train</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  {<span class="ot"> trainId ::</span> <span class="dt">Int</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> arrival ::</span> <span class="dt">Time</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  ,<span class="ot"> departure ::</span> <span class="dt">Time</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  } <span class="kw">deriving</span> (<span class="dt">Eq</span>, <span class="dt">Ord</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">Train</span> <span class="kw">where</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show</span> (<span class="dt">Train</span> trainId _ _) <span class="ot">=</span> <span class="fu">show</span> trainId</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>listToPair (a<span class="op">:</span>b<span class="op">:</span>[]) <span class="ot">=</span> (a,b)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="ot">member ::</span> (<span class="dt">Eq</span> a) <span class="ot">=&gt;</span> (a,a) <span class="ot">-&gt;</span> [(a,a)] <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>member _ [] <span class="ot">=</span> <span class="dt">False</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>member (a,b) (y<span class="op">:</span>ys)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> (a,b)<span class="op">==</span>y <span class="op">||</span> (b,a)<span class="op">==</span>y <span class="ot">=</span> <span class="dt">True</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">otherwise</span>            <span class="ot">=</span> member (a,b) ys</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="ot">everyPair ::</span> [<span class="dt">Train</span>] <span class="ot">-&gt;</span> [(<span class="dt">Train</span>,<span class="dt">Train</span>)]</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>everyPair <span class="ot">=</span> <span class="fu">map</span> listToPair <span class="op">.</span> <span class="fu">filter</span> (\x <span class="ot">-&gt;</span> <span class="fu">length</span> x <span class="op">==</span> <span class="dv">2</span>) <span class="op">.</span> subsequences</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="ot">doTrainsOverlap ::</span> <span class="dt">Train</span> <span class="ot">-&gt;</span> <span class="dt">Train</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>doTrainsOverlap (<span class="dt">Train</span> _ arr1 dep1) (<span class="dt">Train</span> _ arr2 dep2) <span class="ot">=</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  dep2 <span class="op">&gt;=</span> arr1 <span class="op">&amp;&amp;</span> arr2 <span class="op">&lt;=</span> dep1</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="ot">overlappingTrains ::</span> [<span class="dt">Train</span>] <span class="ot">-&gt;</span> <span class="dt">Graph</span> <span class="dt">Train</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>overlappingTrains <span class="ot">=</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span> (<span class="fu">uncurry</span> doTrainsOverlap) <span class="op">.</span> everyPair</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="ot">flatten ::</span> [(a, a)] <span class="ot">-&gt;</span> [a]</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>flatten as <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  (a, b) <span class="ot">&lt;-</span> as</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  [a, b]</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="ot">vertices ::</span> <span class="dt">Ord</span> a <span class="ot">=&gt;</span> <span class="dt">Graph</span> a <span class="ot">-&gt;</span> [a]</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>vertices <span class="ot">=</span> sortUniq <span class="op">.</span> flatten</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="ot">minPlatforms ::</span> [<span class="dt">Train</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>minPlatforms [] <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>minPlatforms trains <span class="ot">=</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="kw">case</span> overlappingTrains trains <span class="kw">of</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    [] <span class="ot">-&gt;</span> <span class="dv">1</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">-&gt;</span></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">maximum</span> <span class="op">.</span> <span class="fu">map</span> <span class="fu">length</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>       <span class="op">.</span> getMaximalCliques (\a b <span class="ot">-&gt;</span> member (a,b) x)</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>       <span class="op">.</span> vertices) x</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="ot">trainsFromTimes ::</span> [<span class="dt">Time</span>] <span class="ot">-&gt;</span> [<span class="dt">Time</span>] <span class="ot">-&gt;</span> [<span class="dt">Train</span>]</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>trainsFromTimes arrs deps <span class="ot">=</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop</span> <span class="dv">1</span> <span class="op">.</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">foldl</span> (\acc (a,d) <span class="ot">-&gt;</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>            acc <span class="op">++</span> [<span class="dt">Train</span> (((<span class="op">+</span><span class="dv">1</span>) <span class="op">.</span> trainId <span class="op">.</span> <span class="fu">last</span>) acc) a d])</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>        [<span class="dt">Train</span> <span class="dv">0</span> (<span class="op">-</span><span class="dv">1</span>) (<span class="op">-</span><span class="dv">1</span>)]</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>  <span class="op">$</span> <span class="fu">zip</span> arrs deps</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>testArrivals <span class="ot">=</span> [<span class="dv">900</span>, <span class="dv">940</span>, <span class="dv">950</span>, <span class="dv">1100</span>, <span class="dv">1500</span>, <span class="dv">1800</span>]<span class="ot"> ::</span> [<span class="dt">Time</span>]</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>testDepartures <span class="ot">=</span> [<span class="dv">910</span>, <span class="dv">1200</span>, <span class="dv">1120</span>, <span class="dv">1130</span>, <span class="dv">1900</span>, <span class="dv">2000</span>]<span class="ot"> ::</span> [<span class="dt">Time</span>]</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> <span class="fu">print</span> <span class="op">$</span> minPlatforms <span class="op">$</span> trainsFromTimes testArrivals testDepartures</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span></code></pre></div>
+<p>Haskell lets you model all sorts of data. And most importantly, it
+allows for local reasoning because its a purely functional lanuguage
+(and thus, side effects are not allowed). This means that you can
+transform the input data however you want as long as the types match.
+Also, because it encourages you to abstract stuff more and more, you end
+up finding patterns in places you would have totally not expected them
+to be in.</p>
+<p>In this solution, I created a function that finds the temporally
+overlapping trains. Thus im not depending on the data being in a certain
+sequence (in the previous solutions the trains had to be sorted). This
+is done be taking every possible pair of trains, then filtering out the
+overlapping ones.</p>
+<p>This list of overlaps if of the type <code
+class="verbatim">[(Train, Train)]</code> which looks an awful lot like a
+graph, especially when you look at an example:</p>
+<pre><code>[(2,3),(2,4),(3,4),(5,6)]
+</code></pre>
+<p>So, I tried drawing out a graph using it: <img src="./graph1.png" />
+the solution to this problem was 3, which seems to be the number of
+nodes in this triangle. So, I tried one with 4 platforms (by adding a
+train that overlaps every other train): <img src="./graph2.png" /> and 4
+is surely enough, the number of nodes in the biggest fully connected
+component, which is also called the biggest maximal clique in graph
+theory terminology.</p>
+<p>Thus this whole problem could be solved by finding the <strong>number
+of nodes in largest maximal clique in the graph of temporal overlaps of
+the trains</strong>. And that is exactly what I did. There was a library
+on hackage that implements an algorithm for finding the maximal clique,
+so I just used that.</p>
+<h1>Conclusion</h1>
+<p>Python is dynamically typed, so you are pretty much on your own, dont
+expect any help from the nonexistent compiler, though there are js style
+type hints in the newer versions it seems. This limited me to a very
+imperative style of progamming where I'm thinking of what known "best
+practices" I can use to get what i have to look more like the result i
+want.</p>
+<p>This means that I am fixated on getting it to work for a given
+example. And after doing enough trial and error, without having a solid
+grasp over why things work they way they do (due to the lack of local
+reasoning), you inevitably miss a few classes of bugs, or totally forget
+that you wrote some code before just for testing that you have to
+replace with real code (which is what happened with the queue.pop in the
+example)</p>
+<p>Rust is statically typed, and has a pretty robust way to model your
+data, this means that you have a way to model what your functions should
+do before writing the functions themselves. This helps you think more in
+terms of data and operations you perform on that data, given you are
+already familiar with doing that, otherwise you just end up doing object
+oriented programming by making a class using a struct, and impl-ing
+class methods onto it.</p>
+<p>Haskell, as far as i know, has the best way to represent/model data
+and behaviour. Its so powerful that you can actually use it as a
+language to model a real world system. And that is the best thing about
+haskell, you can just model your problem, and once you have modeled it,
+you just run the model and extract whatever you want from that
+model.</p>
+<p>TODO: move blogs out of /docs and create a script to compile the org
+files into markdown and create an index file from all the org file
+blogs</p>
