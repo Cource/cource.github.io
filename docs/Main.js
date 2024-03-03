@@ -5461,6 +5461,7 @@ var $author$project$Main$Model = F4(
 	function (key, page, blogContent, blogIndex) {
 		return {blogContent: blogContent, blogIndex: blogIndex, key: key, page: page};
 	});
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $author$project$Main$GotBlogContent = function (a) {
 	return {$: 'GotBlogContent', a: a};
 };
@@ -6250,12 +6251,59 @@ var $author$project$Main$getBlog = function (blogId) {
 			url: '/assets/blogs/' + (blogId + '.html')
 		});
 };
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$blogCmd = function (pa) {
 	if (pa.$ === 'Blog') {
 		var blogId = pa.a;
 		return $author$project$Main$getBlog(blogId);
+	} else {
+		return $elm$core$Platform$Cmd$none;
+	}
+};
+var $author$project$Main$GotBlogIndex = function (a) {
+	return {$: 'GotBlogIndex', a: a};
+};
+var $author$project$Main$BlogInfo = F5(
+	function (name, datePublished, tags, description, blogId) {
+		return {blogId: blogId, datePublished: datePublished, description: description, name: name, tags: tags};
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$list = _Json_decodeList;
+var $elm$json$Json$Decode$map5 = _Json_map5;
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Main$decodeBlogInfo = A6(
+	$elm$json$Json$Decode$map5,
+	$author$project$Main$BlogInfo,
+	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'datePublished', $elm$json$Json$Decode$string),
+	A2(
+		$elm$json$Json$Decode$field,
+		'tags',
+		$elm$json$Json$Decode$list($elm$json$Json$Decode$string)),
+	A2($elm$json$Json$Decode$field, 'description', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'blogId', $elm$json$Json$Decode$string));
+var $author$project$Main$blogIndexDecoder = $elm$json$Json$Decode$list($author$project$Main$decodeBlogInfo);
+var $elm$json$Json$Decode$decodeString = _Json_runOnString;
+var $elm$http$Http$expectJson = F2(
+	function (toMsg, decoder) {
+		return A2(
+			$elm$http$Http$expectStringResponse,
+			toMsg,
+			$elm$http$Http$resolve(
+				function (string) {
+					return A2(
+						$elm$core$Result$mapError,
+						$elm$json$Json$Decode$errorToString,
+						A2($elm$json$Json$Decode$decodeString, decoder, string));
+				}));
+	});
+var $author$project$Main$getBlogIndex = function (page) {
+	if (page.$ === 'Home') {
+		return $elm$http$Http$get(
+			{
+				expect: A2($elm$http$Http$expectJson, $author$project$Main$GotBlogIndex, $author$project$Main$blogIndexDecoder),
+				url: '/assets/blogs/index.json'
+			});
 	} else {
 		return $elm$core$Platform$Cmd$none;
 	}
@@ -6550,61 +6598,18 @@ var $author$project$Main$init = F3(
 		var pa = $author$project$Main$pageFromUrl(url);
 		return _Utils_Tuple2(
 			A4($author$project$Main$Model, key, pa, $author$project$Main$Loading, $author$project$Main$Loading),
-			$author$project$Main$blogCmd(pa));
+			$elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[
+						$author$project$Main$blogCmd(pa),
+						$author$project$Main$getBlogIndex(pa)
+					])));
 	});
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$Failure = {$: 'Failure'};
 var $author$project$Main$Success = function (a) {
 	return {$: 'Success', a: a};
-};
-var $author$project$Main$GotBlogIndex = function (a) {
-	return {$: 'GotBlogIndex', a: a};
-};
-var $author$project$Main$BlogInfo = F5(
-	function (name, datePublished, tags, description, blogId) {
-		return {blogId: blogId, datePublished: datePublished, description: description, name: name, tags: tags};
-	});
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$list = _Json_decodeList;
-var $elm$json$Json$Decode$map5 = _Json_map5;
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $author$project$Main$decodeBlogInfo = A6(
-	$elm$json$Json$Decode$map5,
-	$author$project$Main$BlogInfo,
-	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string),
-	A2($elm$json$Json$Decode$field, 'datePublished', $elm$json$Json$Decode$string),
-	A2(
-		$elm$json$Json$Decode$field,
-		'tags',
-		$elm$json$Json$Decode$list($elm$json$Json$Decode$string)),
-	A2($elm$json$Json$Decode$field, 'description', $elm$json$Json$Decode$string),
-	A2($elm$json$Json$Decode$field, 'blogId', $elm$json$Json$Decode$string));
-var $author$project$Main$blogIndexDecoder = $elm$json$Json$Decode$list($author$project$Main$decodeBlogInfo);
-var $elm$json$Json$Decode$decodeString = _Json_runOnString;
-var $elm$http$Http$expectJson = F2(
-	function (toMsg, decoder) {
-		return A2(
-			$elm$http$Http$expectStringResponse,
-			toMsg,
-			$elm$http$Http$resolve(
-				function (string) {
-					return A2(
-						$elm$core$Result$mapError,
-						$elm$json$Json$Decode$errorToString,
-						A2($elm$json$Json$Decode$decodeString, decoder, string));
-				}));
-	});
-var $author$project$Main$getBlogIndex = function (page) {
-	if (page.$ === 'Home') {
-		return $elm$http$Http$get(
-			{
-				expect: A2($elm$http$Http$expectJson, $author$project$Main$GotBlogIndex, $author$project$Main$blogIndexDecoder),
-				url: '/assets/blogs/index.json'
-			});
-	} else {
-		return $elm$core$Platform$Cmd$none;
-	}
 };
 var $elm$browser$Browser$Navigation$load = _Browser_load;
 var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
@@ -6678,12 +6683,7 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{page: pa}),
-					$elm$core$Platform$Cmd$batch(
-						_List_fromArray(
-							[
-								$author$project$Main$blogCmd(pa),
-								$author$project$Main$getBlogIndex(pa)
-							])));
+					$author$project$Main$blogCmd(pa));
 			case 'GotBlogContent':
 				var content = msg.a;
 				return _Utils_Tuple2(

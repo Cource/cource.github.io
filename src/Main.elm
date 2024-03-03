@@ -58,7 +58,7 @@ main = Browser.application
 init : () -> Url.Url -> Nav.Key -> (Model, Cmd Msg)
 init _ url key =
     let pa = pageFromUrl url
-    in (Model key pa Loading Loading, blogCmd pa)
+    in (Model key pa Loading Loading, Cmd.batch [blogCmd pa, getBlogIndex pa])
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -71,7 +71,7 @@ update msg model =
                     (model, Nav.load href)
         UrlChanged url ->
             let pa = pageFromUrl url
-            in ({model|page = pa}, Cmd.batch [blogCmd pa, getBlogIndex pa])
+            in ({model|page = pa}, blogCmd pa)
         GotBlogContent content ->
             ({model|blogContent =
                   case content of
