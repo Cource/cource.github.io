@@ -3,11 +3,12 @@ module Main exposing (..)
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (Html, a, div, h1, h2, img, text, p)
-import Html.Attributes exposing (alt, class, href, src, style)
+import Html.Attributes exposing (alt, class, href, src, style, property)
+import Json.Encode as JE exposing (string)
+import Json.Decode as JD exposing (Decoder, map5, field, string, list)
 import Http
-import Markdown
 import Url
-import Url.Parser exposing (Parser, parse, map, oneOf, s, top, string, (</>))
+import Url.Parser as URLP exposing (Parser, parse, map, oneOf, s, top, string, (</>))
 
 type Page
     = Home
@@ -23,7 +24,7 @@ pageFromUrl url =
 pageParser : Parser (Page -> a) a
 pageParser =
     oneOf [ map Home top
-          , map Blog (s "blog" </> string)
+          , map Blog (s "blog" </> URLP.string)
           ]
 
 type FailableLoad a
@@ -35,12 +36,14 @@ type alias Model =
     { key : Nav.Key
     , page : Page
     , blogContent : FailableLoad String
+    , blogIndex : FailableLoad (List BlogInfo)
     }
 
 type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
     | GotBlogContent (Result Http.Error String)
+    | GotBlogIndex (Result Http.Error (List BlogInfo))
 
 main : Program () Model Msg
 main = Browser.application
@@ -55,7 +58,7 @@ main = Browser.application
 init : () -> Url.Url -> Nav.Key -> (Model, Cmd Msg)
 init _ url key =
     let pa = pageFromUrl url
-    in (Model key pa Loading, blogCmd pa)
+    in (Model key pa Loading Loading, blogCmd pa)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -75,6 +78,12 @@ update msg model =
                       Err _ -> Failure
                       Ok val -> Success val
              }, Cmd.none)
+        GotBlogIndex index ->
+            ({model|blogIndex =
+                  case index of
+                      Err _ -> Failure
+                      Ok val -> Success val
+             }, Cmd.none)
 
 blogCmd : Page -> Cmd Msg
 blogCmd pa =
@@ -85,10 +94,19 @@ blogCmd pa =
 getBlog : String -> Cmd Msg
 getBlog blogId =
     Http.get
-        { url = "/assets/blogs/" ++ blogId ++ ".md"
+        { url = "/assets/blogs/" ++ blogId ++ ".html"
         , expect  = Http.expectString GotBlogContent
         }
 
+getBlogIndex : Page -> Cmd Msg
+getBlogIndex page =
+    case page of
+        Home -> Http.get
+                { url = "/assets/blogs/index.json"
+                , expect = Http.expectJson GotBlogIndex blogIndexDecoder
+                }
+        _ -> Cmd.none
+        
 
 
 
@@ -102,7 +120,7 @@ view model =
                  Home ->
                      [ hero
                      , portfolio projectInfos
-                     , blogList blogInfos
+                     , blogList model.blogIndex
                      ]
                  Blog _ -> [viewBlog model.blogContent]
                  PageNotFound -> [page404]
@@ -123,7 +141,7 @@ viewBlog status =
         Failure -> page404
         Loading -> text "Loading Content..."
         Success content ->
-            Markdown.toHtml [class "blog-content"] content
+            div [class "blog-content", property  "innerHTML" <| JE.string content] []
 
 logo : Html msg
 logo =
@@ -221,38 +239,39 @@ type alias BlogInfo =
     , datePublished : String
     , tags : List String
     , description : String
-    , id : String
+    , blogId : String
     }
 
-blogInfos : List BlogInfo
-blogInfos =
-    [ { name = "Exploring Emacs"
-      , datePublished = "2/2/2024"
-      , tags = ["emacs", "test"]
-      , description = "Emacs is a text editor that is a part of the GNU/Linux system, why should you use it?..."
-      , id = "test"
-      }
-    , { name = "Function pointers in C"
-      , datePublished = "16/12/2023"
-      , tags = ["c", "fp"]
-      , description = "You can actually pass around functions to other functions in c. This article could give you some valuable insight into how you can use it."
-      , id = "fpinc"
-      }
-    ]
+blogIndexDecoder : Decoder (List BlogInfo)
+blogIndexDecoder = list decodeBlogInfo
 
-blogList : List BlogInfo -> Html Msg
-blogList blogs =
-    div [class "blog-list"]
-        ([ div []
-               [h1 [] [text "Articles"]
-               , p [] [text "A blog where I probably won't post much"]
-               ]
-         ] ++ List.map blogEntry blogs)
+decodeBlogInfo : Decoder BlogInfo
+decodeBlogInfo =
+    map5 BlogInfo
+        (field "name" JD.string)
+        (field "datePublished" JD.string)
+        (field "tags" (list JD.string))
+        (field "description" JD.string)
+        (field "blogId" JD.string)
+        
+    
+blogList : FailableLoad (List BlogInfo) -> Html Msg
+blogList res =
+    case res of
+        Failure -> page404
+        Loading -> text "Loading Content..."
+        Success blogs ->
+            div [class "blog-list"]
+                ([ div []
+                       [h1 [] [text "Articles"]
+                       , p [] [text "A blog where I probably won't post much"]
+                       ]
+                 ] ++ List.map blogEntry blogs)
 
 blogEntry : BlogInfo -> Html Msg
 blogEntry blog =
     a [ class "blog-entry"
-      , href ("/blog/" ++ blog.id)
+      , href ("/blog/" ++ blog.blogId)
       ]
       [ h2 [] [text blog.name]
       , p [class "blog-date"] [text blog.datePublished]

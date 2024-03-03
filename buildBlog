@@ -1,0 +1,104 @@
+#!/usr/bin/env nix-shell
+#!nix-shell --pure -i runghc -p "haskellPackages.ghcWithPackages (pkgs: with pkgs; [ aeson containers directory filepath pandoc parsec text ])"
+
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+import qualified Data.Text as T
+import Text.Pandoc (runIOorExplode, readOrg, writeHtml5String, def)
+import Text.Parsec
+import qualified Data.Text.IO as T
+import System.Directory
+import System.FilePath
+import System.Environment
+import Data.Maybe
+import Data.Aeson
+import GHC.Generics (Generic)
+
+data Header = Header
+  { title :: T.Text
+  , datePublished :: T.Text
+  , tags :: [T.Text]
+  , description :: T.Text
+  , blogId :: String
+  } deriving (Show, Generic, ToJSON)
+
+
+parseHeader :: FilePath -> [T.Text] -> Maybe Header
+parseHeader file =
+  either (const Nothing) (makeHeaders file) . sequence . map parseMetaPair
+
+makeHeaders :: FilePath -> [(T.Text, T.Text)] -> Maybe Header
+makeHeaders filename xs = do
+  mTitle  <- lookup "title" xs
+  mEDate  <- lookup "date" xs
+  mDate   <- either (const Nothing) Just
+             $ parse emacsDateP "Invalid Date" mEDate
+  mTagStr <- lookup "tags" xs
+  mDesc   <- lookup "desc" xs
+  return $ Header mTitle mDate (T.words mTagStr) mDesc (dropExtension $ takeFileName filename)
+
+parseMetaPair :: T.Text -> Either ParseError (T.Text, T.Text)
+parseMetaPair = parse headerP "(Could not parse Header)"
+
+headerP :: Parsec T.Text u (T.Text, T.Text)
+headerP = do
+  string "#+"
+  spaces
+  attr <- manyTill anyChar (char ':')
+  spaces
+  val <- many anyChar
+  return (T.pack attr, T.pack val)
+
+emacsDateP :: Parsec T.Text u T.Text
+emacsDateP = do
+  spaces
+  date <- between (char '<' >> spaces) (spaces >> char '>') (many $ noneOf ">")
+  return $ T.pack date
+
+type HTML = T.Text
+
+type Blog = (Header, HTML)
+
+convertBody :: [T.Text] -> IO HTML
+convertBody file = runIOorExplode $
+  readOrg def (T.unlines file) >>= writeHtml5String def
+
+headerToHtml :: Header -> HTML
+headerToHtml (Header title date tags _ _) = T.concat
+  [ "<header>"
+  , "<h1 class=\"title\">", title, "</h1>"
+  , "<div class=\"date\">", date, "</div>"
+  , "<ul>", T.concat $ map (\t -> T.concat ["<li>", t, "</li>"]) tags , "</ul>"
+  , "</header>\n" ]
+
+writeBlog :: String -> Maybe Header -> T.Text -> IO (Maybe Header)
+writeBlog _ Nothing _ = pure Nothing
+writeBlog outDir (Just header) content = do
+  T.writeFile (outDir </> blogId header ++ ".html") $ T.concat [headerToHtml header, content]
+  return $ Just header
+
+main :: IO ()
+main = do
+  args <- getArgs
+  inDir <- pure $ args !! 0
+  outDir <- pure $ args !! 1
+  orgFiles <- filter (\f -> (reverse . take 3 . reverse) f == "org")
+    <$> listDirectory inDir
+  print orgFiles
+  mHeaders <- sequence $
+    map (compileHtml outDir) (map (inDir </>) orgFiles)
+  headers <- pure $ catMaybes mHeaders
+  print headers
+  encodeFile ((args !! 1) </> "index.json") headers
+
+compileHtml :: FilePath -> FilePath ->  IO (Maybe Header)
+compileHtml outDir orgFile = do
+  (orgHead, orgBody) <- (splitAt 5 . T.lines) <$> T.readFile orgFile
+  maybeHeader <- pure $ parseHeader orgFile orgHead
+  body <- convertBody orgBody
+  writeBlog outDir maybeHeader body
+
