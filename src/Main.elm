@@ -71,7 +71,7 @@ update msg model =
                     (model, Nav.load href)
         UrlChanged url ->
             let pa = pageFromUrl url
-            in ({model|page = pa}, blogCmd pa)
+            in ({model|page = pa}, Cmd.batch [blogCmd pa, getBlogIndex pa])
         GotBlogContent content ->
             ({model|blogContent =
                   case content of
