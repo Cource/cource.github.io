@@ -163,9 +163,9 @@ This list of overlaps if of the type =[(Train, Train)]= which looks an awful lot
 [(2,3),(2,4),(3,4),(5,6)]
 #+end_src
 So, I tried drawing out a graph using it:
-[[/assets/blogs/graph1.png]]
+[[/assets/assets/blogs/graph1.png]]
 the solution to this problem was 3, which seems to be the number of nodes in this triangle. So, I tried one with 4 platforms (by adding a train that overlaps every other train):
-[[/assets/blogs/graph2.png]]
+[[/assets/assets/blogs/graph2.png]]
 and 4 is surely enough, the number of nodes in the biggest fully connected component, which is also called the biggest maximal clique in graph theory terminology.
 
 Thus this whole problem could be solved by finding the *number of nodes in largest maximal clique in the graph of temporal overlaps of the trains*.

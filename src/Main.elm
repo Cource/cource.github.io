@@ -3,9 +3,10 @@ module Main exposing (..)
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (Html, a, div, h1, h2, img, text, p)
-import Html.Attributes exposing (alt, class, href, src, style, property)
-import Markdown exposing (toHtmlWith, defaultOptions)
+import Html.Attributes exposing (alt, class, href, src, style)
 import Json.Decode as JD exposing (Decoder, map5, field, string, list)
+import Json.Encode
+import VirtualDom
 import Http
 import Url
 import Url.Parser as URLP exposing (Parser, parse, map, oneOf, s, top, string, (</>))
@@ -139,7 +140,7 @@ viewBlog status =
         Failure -> page404
         Loading -> text "Loading Content..."
         Success content ->
-            Markdown.toHtmlWith {defaultOptions|sanitize=False} [class "blog-content"] content
+            div [(VirtualDom.property "innerHTML" << Json.Encode.string) content, class "blog-content"] []
 
 logo : Html msg
 logo =
