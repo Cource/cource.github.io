@@ -189,10 +189,10 @@ body {
     margin-block: 1rem; }
   .blog-content code {
     font-family: "JetBrains Mono"; }
-    .blog-content code .verbatim {
-      background: #041a18;
-      padding: 0.3rem;
-      border-radius: 0.5rem; }
+  .blog-content .verbatim {
+    background: #041a18;
+    padding: 0.3rem;
+    border-radius: 0.5rem; }
   .blog-content header {
     margin-bottom: 5rem; }
     .blog-content header > ul {
