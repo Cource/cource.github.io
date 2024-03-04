@@ -17,7 +17,7 @@
       function replaceInnerHTML() {
 	  const element = document.querySelector('.blog-content');
 	  element.innerHTML = element.HTML;
-	  element.removeAttribute('data-innerHTML');
+	  element.HTML = "";
       }
 
       const observer = new MutationObserver(replaceInnerHTML);
