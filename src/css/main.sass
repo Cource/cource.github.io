@@ -195,7 +195,20 @@ body
   hr
     color: $Teal60
     margin-block: 1rem
-    
+  header
+    margin-botttom: 5rem
+    &>ul
+      margin-left: 0 !important
+      list-style: none
+      flex-direction: row
+      display: flex
+      gap: 1rem
+      color: $Teal50
+      & li::before
+        content: "#"
+        
+
+      
 @media screen and (max-width: 700px)
   .content > *
     margin-left: 10vw

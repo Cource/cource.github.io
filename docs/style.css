@@ -183,6 +183,17 @@ body {
   .blog-content hr {
     color: #51A59D;
     margin-block: 1rem; }
+  .blog-content header {
+    margin-botttom: 5rem; }
+    .blog-content header > ul {
+      margin-left: 0 !important;
+      list-style: none;
+      flex-direction: row;
+      display: flex;
+      gap: 1rem;
+      color: #2A6F69; }
+      .blog-content header > ul li::before {
+        content: "#"; }
 
 @media screen and (max-width: 700px) {
   .content > * {
