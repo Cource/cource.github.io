@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0");
 html {
   --project-padding: 4rem; }
 
@@ -42,7 +43,8 @@ body {
   padding: 2rem 2.5rem;
   width: 2.5rem;
   position: fixed;
-  top: 0; }
+  top: 0;
+  z-index: 1; }
 
 .page-not-found {
   margin: auto !important;
@@ -62,7 +64,7 @@ body {
 
 .details {
   margin-top: 2rem;
-  font-family: "Fira Code"; }
+  font-family: "JetBrains Mono"; }
 
 .designer {
   font-weight: bold;
@@ -185,6 +187,12 @@ body {
   .blog-content hr {
     color: #51A59D;
     margin-block: 1rem; }
+  .blog-content code {
+    font-family: "JetBrains Mono"; }
+    .blog-content code .verbatim {
+      background: #041a18;
+      padding: 0.3rem;
+      border-radius: 0.5rem; }
   .blog-content header {
     margin-bottom: 5rem; }
     .blog-content header > ul {

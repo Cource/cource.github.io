@@ -6943,6 +6943,7 @@ var $author$project$Main$footer = A2(
 						{image: '/assets/svgs/instagram.svg', link: 'https://instagram.com/jeffjacobjoy', name: 'Instagram'}
 					])))
 		]));
+var $elm$html$Html$span = _VirtualDom_node('span');
 var $author$project$Main$hero = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -7007,7 +7008,17 @@ var $author$project$Main$hero = A2(
 			_List_Nil,
 			_List_fromArray(
 				[
-					$elm$html$Html$text('🡳  Scroll down for more')
+					A2(
+					$elm$html$Html$span,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('material-symbols-outlined')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('expand_more')
+						])),
+					$elm$html$Html$text('Scroll down for more')
 				]))
 		]));
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');

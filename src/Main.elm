@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (Html, a, div, h1, h2, img, text, p)
+import Html exposing (Html, a, div, h1, h2, img, text, p, span)
 import Html.Attributes exposing (alt, class, href, src, style)
 import Json.Decode as JD exposing (Decoder, map5, field, string, list)
 import Html.Parser
@@ -165,7 +165,10 @@ hero =
                 , text "| Programmer"
                 ]
             ]
-        , div [] [text "🡳  Scroll down for more"]
+        , div []
+            [ span [ class "material-symbols-outlined" ] [text "expand_more"]
+            , text "Scroll down for more"
+            ]
         ]
 
 
