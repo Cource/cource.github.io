@@ -161,10 +161,12 @@ body {
   margin-block: 8rem;
   margin-right: 10vw;
   max-width: 60rem;
-  line-height: 1.4; }
+  line-height: 1.5; }
   .blog-content h1, .blog-content h2, .blog-content h3, .blog-content h4, .blog-content h5, .blog-content h6 {
     margin-top: 2rem;
     margin-bottom: 0.6rem; }
+  .blog-content p {
+    margin-block: 1rem; }
   .blog-content ul {
     margin-left: 1.2rem; }
   .blog-content pre {
