@@ -13,16 +13,6 @@
       var app = Elm.Main.init({
           node: document.getElementById('elm')
       });
-
-      function replaceInnerHTML() {
-	  const element = document.querySelector('.blog-content');
-	  element.innerHTML = element.HTML;
-	  element.HTML = "";
-      }
-
-      const observer = new MutationObserver(replaceInnerHTML);
-
-      observer.observe(document.body, { childList: true, subtree: true });
     </script>
 </body>
 </html>

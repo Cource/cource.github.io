@@ -5,8 +5,8 @@ import Browser.Navigation as Nav
 import Html exposing (Html, a, div, h1, h2, img, text, p)
 import Html.Attributes exposing (alt, class, href, src, style)
 import Json.Decode as JD exposing (Decoder, map5, field, string, list)
-import Json.Encode
-import VirtualDom
+import Html.Parser
+import Html.Parser.Util
 import Http
 import Url
 import Url.Parser as URLP exposing (Parser, parse, map, oneOf, s, top, string, (</>))
@@ -136,11 +136,14 @@ page404 = div [ class "page-not-found" ]
 
 viewBlog : FailableLoad String -> Html msg
 viewBlog status =
-    case status of
-        Failure -> page404
-        Loading -> text "Loading Content..."
-        Success content ->
-            div [(VirtualDom.property "HTML" << Json.Encode.string) content, class "blog-content"] []
+    div [ class "blog-content"]
+        (case status of
+            Failure -> [page404]
+            Loading -> [text "Loading Content..."]
+            Success content ->
+                case Html.Parser.run content of
+                    Ok body -> Html.Parser.Util.toVirtualDom body
+                    Err _ -> [text "Could not Load Content!"])
 
 logo : Html msg
 logo =
