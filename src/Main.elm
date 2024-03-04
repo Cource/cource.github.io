@@ -140,7 +140,7 @@ viewBlog status =
         Failure -> page404
         Loading -> text "Loading Content..."
         Success content ->
-            div [(VirtualDom.property "innerHTML" << Json.Encode.string) content, class "blog-content"] []
+            div [(VirtualDom.property "HTML" << Json.Encode.string) content, class "blog-content"] []
 
 logo : Html msg
 logo =

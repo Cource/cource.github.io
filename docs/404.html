@@ -14,16 +14,13 @@
           node: document.getElementById('elm')
       });
 
-      function replaceDataInnerHTML() {
-	  const elements = document.querySelectorAll('.blog-content[data-innerHTML]');
-
-	  elements.forEach(element => {
-	      element.innerHTML = element.getAttribute('data-innerHTML');
-	      element.removeAttribute('data-innerHTML');
-	  });
+      function replaceInnerHTML() {
+	  const element = document.querySelector('.blog-content');
+	  element.innerHTML = element.HTML;
+	  element.removeAttribute('data-innerHTML');
       }
 
-      const observer = new MutationObserver(replaceDataInnerHTML);
+      const observer = new MutationObserver(replaceInnerHTML);
 
       observer.observe(document.body, { childList: true, subtree: true });
     </script>

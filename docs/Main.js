@@ -7077,7 +7077,7 @@ var $author$project$Main$viewBlog = function (status) {
 					[
 						A2(
 						$elm$core$Basics$composeL,
-						$elm$virtual_dom$VirtualDom$property('innerHTML'),
+						$elm$virtual_dom$VirtualDom$property('HTML'),
 						$elm$json$Json$Encode$string)(content),
 						$elm$html$Html$Attributes$class('blog-content')
 					]),
