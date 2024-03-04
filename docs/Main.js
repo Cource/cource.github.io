@@ -7005,7 +7005,10 @@ var $author$project$Main$hero = A2(
 				])),
 			A2(
 			$elm$html$Html$div,
-			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('row')
+				]),
 			_List_fromArray(
 				[
 					A2(

@@ -165,7 +165,7 @@ hero =
                 , text "| Programmer"
                 ]
             ]
-        , div []
+        , div [ class "row" ]
             [ span [ class "material-symbols-outlined" ] [text "expand_more"]
             , text "Scroll down for more"
             ]
