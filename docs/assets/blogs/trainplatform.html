@@ -172,7 +172,7 @@ overlapping trains. Thus im not depending on the data being in a certain
 sequence (in the previous solutions the trains had to be sorted). This
 is done be taking every possible pair of trains, then filtering out the
 overlapping ones.</p>
-<p>This list of overlaps if of the type <code
+<p>This list of overlaps is of the type <code
 class="verbatim">[(Train, Train)]</code> which looks an awful lot like a
 graph, especially when you look at an example:</p>
 <pre><code>[(2,3),(2,4),(3,4),(5,6)]
@@ -189,8 +189,8 @@ graph theory terminology.</p>
 <p>Thus this whole problem could be solved by finding the <strong>number
 of nodes in largest maximal clique in the graph of temporal overlaps of
 the trains</strong>. And that is exactly what I did. There was a library
-on hackage that implements an algorithm for finding the maximal clique,
-so I just used that.</p>
+on hackage that implements an algorithm for finding the maximal cliques
+in a graph, so I just used that.</p>
 <h1>Conclusion</h1>
 <p>Python is dynamically typed, so you are pretty much on your own, dont
 expect any help from the nonexistent compiler, though there are js style
@@ -208,16 +208,15 @@ example)</p>
 <p>Rust is statically typed, and has a pretty robust way to model your
 data, this means that you have a way to model what your functions should
 do before writing the functions themselves. This helps you think more in
-terms of data and operations you perform on that data, given you are
-already familiar with doing that, otherwise you just end up doing object
-oriented programming by making a class using a struct, and impl-ing
-class methods onto it.</p>
+terms of data and operations you perform on that data, given that you
+are already familiar with data oriented programming, otherwise you just
+end up doing object oriented programming by making a class using a
+struct, and impl-ing class methods onto it.</p>
 <p>Haskell, as far as i know, has the best way to represent/model data
 and behaviour. Its so powerful that you can actually use it as a
-language to model a real world system. And that is the best thing about
+language to model a real world system (as in, use it to organize your
+understanding of the relationships between things in the real world). In
 haskell, you can just model your problem, and once you have modeled it,
-you just run the model and extract whatever you want from that
-model.</p>
-<p>TODO: move blogs out of /docs and create a script to compile the org
-files into markdown and create an index file from all the org file
-blogs</p>
+you just run the model and extract whatever you want from that model.
+This method is called domain modelling, and there are a lot of resources
+about it online if you intent on learning more about it.</p>
