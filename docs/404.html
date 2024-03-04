@@ -10,9 +10,22 @@
     <div id="elm"></div>
     <script src="/Main.js"></script>
     <script>
-        var app = Elm.Main.init({
-            node: document.getElementById('elm')
-        });
+      var app = Elm.Main.init({
+          node: document.getElementById('elm')
+      });
+
+      function replaceDataInnerHTML() {
+	  const elements = document.querySelectorAll('.blog-content[data-innerHTML]');
+
+	  elements.forEach(element => {
+	      element.innerHTML = element.getAttribute('data-innerHTML');
+	      element.removeAttribute('data-innerHTML');
+	  });
+      }
+
+      const observer = new MutationObserver(replaceDataInnerHTML);
+
+      observer.observe(document.getElementById('elm'), { childList: true, subtree: true });
     </script>
 </body>
 </html>
