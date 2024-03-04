@@ -164,7 +164,7 @@ This list of overlaps if of the type =[(Train, Train)]= which looks an awful lot
 #+end_src
 So, I tried drawing out a graph using it:
 
-[[ /assets/blogs/graph1.png]]
+[[https://cource.github.io/assets/blogs/graph1.png]]
 
 the solution to this problem was 3, which seems to be the number of nodes in this triangle. So, I tried one with 4 platforms (by adding a train that overlaps every other train):
 
